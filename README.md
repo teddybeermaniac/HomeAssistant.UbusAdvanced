@@ -52,7 +52,7 @@ Home Assistant device tracker which uses OpenWRT's ubus.
 * Restart rpcd `/etc/init.d/rpcd restart`.
 
 ### In Home Assistant
-* Add device tracker to `configuration.yaml`. Use your router's IP, or hostname and username, and password that you added to `/etc/config/rpcd`:
+* Add device tracker to `configuration.yaml`. Use your router's IP, or hostname and username, and plaintext version of password that you added to `/etc/config/rpcd`:
     ```yaml
     device_tracker:
       - platform: ubus_advanced
@@ -77,6 +77,8 @@ Home Assistant device tracker which uses OpenWRT's ubus.
 |name_whitelist||`[]`|Device DHCP name whitelist (supports wildcards)|
 |ssid_blacklist||`[]`|SSID blacklist|
 |ssid_whitelist||`[]`|SSID whitelist|
+|device_provider||`hostapd`|How to acquire device list. One of: `hostapd`|
+|name_provider||`dnsmasq`|How to acquire device name mapping. One of: `dnsmasq`|
 
 Other common options can be found in [Home Assistant device_tracker].
 
