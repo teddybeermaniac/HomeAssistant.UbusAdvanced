@@ -1,7 +1,7 @@
 {
   "domain": "ubus_advanced",
   "name": "Ubus Advanced",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "integration_type": "entity",
   "iot_class": "local_polling",
   "documentation": "https://github.com/teddybeermaniac/HomeAssistant.UbusAdvanced",

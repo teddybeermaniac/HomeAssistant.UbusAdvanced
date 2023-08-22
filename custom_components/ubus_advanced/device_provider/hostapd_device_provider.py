@@ -14,25 +14,28 @@
 # NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-import collections
-from .device_provider import Device, DeviceProvider
+from logging import Logger
+from typing import NamedTuple
+from ..model import Device
+from ..ubus_client import UbusClient
+from .base_device_provider import BaseDeviceProvider
 
-DEVICE_PROVIDER_HOSTAPD = 'hostapd'
+class Network(NamedTuple):
+    hostapd: str
+    ssid: str
 
-Network = collections.namedtuple('Network', ['hostapd', 'ssid'])
-
-class HostapdDeviceProvider(DeviceProvider):
-    def __init__(self, logger, ubus_client):
+class HostapdDeviceProvider(BaseDeviceProvider):
+    def __init__(self, logger: Logger, ubus_client: UbusClient):
         self._logger = logger.getChild('HostapdDeviceProvider')
         self._ubus_client = ubus_client
 
-    def get(self):
+    def get(self) -> list[Device]:
         self._logger.debug('Loading data')
         networks = self._get_networks()
 
         return self._get_devices(networks)
 
-    def _get_networks(self):
+    def _get_networks(self) -> list[Network]:
         self._logger.debug('Getting Wi-Fi networks')
         hostapds = self._ubus_client.list('hostapd.*').keys()
 
@@ -46,7 +49,7 @@ class HostapdDeviceProvider(DeviceProvider):
         self._logger.debug(f'Got {networks} Wi-Fi networks')
         return networks
 
-    def _get_devices(self, networks):
+    def _get_devices(self, networks: list[Network]) -> list[Device]:
         self._logger.debug('Getting devices')
         devices = []
         for network in networks:
