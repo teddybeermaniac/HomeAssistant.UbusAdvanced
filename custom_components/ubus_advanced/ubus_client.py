@@ -33,7 +33,7 @@ class UbusClient:
         self._logger.info(f'Connecting to ubus {self._ubus.host}')
         self._ubus.connect()
 
-    def call(self, subsystem: str, method: str, **arguments: dict[str, Any]) -> dict[str, Any]:
+    def call(self, subsystem: str, method: str, **arguments: str) -> dict[str, Any]:
         self._logger.debug(f'Calling method {method} from {subsystem} subsystem with {arguments}')
         return self._retry(lambda: self._ubus.api_call(API_RPC_CALL, subsystem, method, arguments))
 
