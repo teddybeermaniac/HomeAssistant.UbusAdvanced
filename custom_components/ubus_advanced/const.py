@@ -14,12 +14,23 @@
 # NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-import abc
-import collections
+from typing import Final
 
-Name = collections.namedtuple('Name', ['mac', 'name'])
+CONF_MAC_BLACKLIST: Final[str] = 'mac_blacklist'
+CONF_MAC_WHITELIST: Final[str] = 'mac_whitelist'
+CONF_NAME_BLACKLIST: Final[str] = 'name_blacklist'
+CONF_NAME_WHITELIST: Final[str] = 'name_whitelist'
+CONF_SSID_BLACKLIST: Final[str] = 'ssid_blacklist'
+CONF_SSID_WHITELIST: Final[str] = 'ssid_whitelist'
 
-class NameProvider(abc.ABC):
-    @abc.abstractmethod
-    def get(self):
-        pass
+CONF_DEVICE_PROVIDER: Final[str] = 'device_provider'
+DEVICE_PROVIDER_HOSTAPD: Final[str] = 'hostapd'
+DEVICE_PROVIDERS: Final[list[str]] = [
+    DEVICE_PROVIDER_HOSTAPD
+]
+
+CONF_NAME_PROVIDER: Final[str] = 'name_provider'
+NAME_PROVIDER_DNSMASQ: Final[str] = 'dnsmasq'
+NAME_PROVIDERS: Final[list[str]] = [
+    NAME_PROVIDER_DNSMASQ
+]

@@ -14,20 +14,21 @@
 # NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-from .name_provider import Name, NameProvider
+from logging import Logger
+from ..model import Name
+from ..ubus_client import UbusClient
+from .base_name_provider import BaseNameProvider
 
-NAME_PROVIDER_DNSMASQ = 'dnsmasq'
-
-class DnsmasqNameProvider(NameProvider):
-    def __init__(self, logger, ubus_client):
+class DnsmasqNameProvider(BaseNameProvider):
+    def __init__(self, logger: Logger, ubus_client: UbusClient):
         self._logger = logger.getChild('DnsmasqNameProvider')
         self._ubus_client = ubus_client
 
-    def get(self):
+    def get(self) -> list[Name]:
         self._logger.debug('Loading data')
         return self._get_names()
 
-    def _get_names(self):
+    def _get_names(self) -> list[Name]:
         self._logger.debug('Getting DHCP names')
         dnsmasqs = self._ubus_client.call('uci', 'get', config='dhcp', type='dnsmasq')['values']
 

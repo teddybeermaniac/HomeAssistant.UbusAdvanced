@@ -14,31 +14,34 @@
 # NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-import openwrt
-import urllib
+from logging import Logger
+from openwrt.ubus import Ubus
+from openwrt.ubus.const import API_RPC_CALL, API_RPC_LIST
+from typing import Any, Callable
+from urllib.parse import urlunparse, urlparse
 
 class UbusClient:
-    def __init__(self, logger, host, username, password):
+    def __init__(self, logger: Logger, host: str, username: str, password: str):
         self._logger = logger.getChild('UbusClient')
 
-        host_parsed = urllib.parse.urlparse(host)
-        url = urllib.parse.urlunparse((host_parsed.scheme, host_parsed.netloc, '/ubus', '', '', ''))
+        host_parsed = urlparse(host)
+        url = urlunparse((host_parsed.scheme, host_parsed.netloc, '/ubus', '', '', ''))
 
-        self._ubus = openwrt.ubus.Ubus(url, username, password, verify=True)
+        self._ubus = Ubus(url, username, password, verify=True)
 
-    def connect(self):
+    def connect(self) -> None:
         self._logger.info(f'Connecting to ubus {self._ubus.host}')
         self._ubus.connect()
 
-    def call(self, subsystem, method, **arguments):
+    def call(self, subsystem: str, method: str, **arguments: str) -> dict[str, Any]:
         self._logger.debug(f'Calling method {method} from {subsystem} subsystem with {arguments}')
-        return self._retry(lambda: self._ubus.api_call(openwrt.ubus.const.API_RPC_CALL, subsystem, method, arguments))
+        return self._retry(lambda: self._ubus.api_call(API_RPC_CALL, subsystem, method, arguments))
 
-    def list(self, subsystem):
+    def list(self, subsystem: str) -> dict[str, Any]:
         self._logger.debug(f'Listing subsystem {subsystem}')
-        return self._retry(lambda: self._ubus.api_call(openwrt.ubus.const.API_RPC_LIST, subsystem))
+        return self._retry(lambda: self._ubus.api_call(API_RPC_LIST, subsystem))
 
-    def _retry(self, callback):
+    def _retry(self, callback: Callable[[], dict[str, Any]]) -> dict[str, Any]:
         try:
             return callback()
         except PermissionError:
