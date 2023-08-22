@@ -18,8 +18,8 @@ import fnmatch
 import homeassistant
 import logging
 import voluptuous
-from .dnsmasq_name_provider import NAME_PROVIDER_DNSMASQ, DnsmasqNameProvider
-from .hostapd_device_provider import DEVICE_PROVIDER_HOSTAPD, HostapdDeviceProvider
+from .name_provider.dnsmasq_name_provider import NAME_PROVIDER_DNSMASQ, DnsmasqNameProvider
+from .device_provider.hostapd_device_provider import DEVICE_PROVIDER_HOSTAPD, HostapdDeviceProvider
 from .ubus_client import UbusClient
 
 CONF_DEVICE_PROVIDER = 'device_provider'

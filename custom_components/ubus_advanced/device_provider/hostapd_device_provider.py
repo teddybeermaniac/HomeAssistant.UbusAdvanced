@@ -15,13 +15,13 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 import collections
-from .device_provider import Device, DeviceProvider
+from .base_device_provider import Device, BaseDeviceProvider
 
 DEVICE_PROVIDER_HOSTAPD = 'hostapd'
 
 Network = collections.namedtuple('Network', ['hostapd', 'ssid'])
 
-class HostapdDeviceProvider(DeviceProvider):
+class HostapdDeviceProvider(BaseDeviceProvider):
     def __init__(self, logger, ubus_client):
         self._logger = logger.getChild('HostapdDeviceProvider')
         self._ubus_client = ubus_client

@@ -14,11 +14,11 @@
 # NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-from .name_provider import Name, NameProvider
+from .base_name_provider import Name, BaseNameProvider
 
 NAME_PROVIDER_DNSMASQ = 'dnsmasq'
 
-class DnsmasqNameProvider(NameProvider):
+class DnsmasqNameProvider(BaseNameProvider):
     def __init__(self, logger, ubus_client):
         self._logger = logger.getChild('DnsmasqNameProvider')
         self._ubus_client = ubus_client

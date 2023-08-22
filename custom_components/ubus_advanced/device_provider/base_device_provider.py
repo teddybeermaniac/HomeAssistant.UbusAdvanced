@@ -17,9 +17,9 @@
 import abc
 import collections
 
-Name = collections.namedtuple('Name', ['mac', 'name'])
+Device = collections.namedtuple('Device', ['mac', 'ssid'])
 
-class NameProvider(abc.ABC):
+class BaseDeviceProvider(abc.ABC):
     @abc.abstractmethod
     def get(self):
         pass
